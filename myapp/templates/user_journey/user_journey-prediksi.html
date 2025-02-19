@@ -1,0 +1,25 @@
+{% extends 'user_journey/user_journey.html' %} {% block content %}
+  <div class="chart-container">
+    <canvas id="predictionFrequencyChart"></canvas>
+    <div class="mt-3">
+      <table class="table table-striped" >
+        <thead>
+          <tr>
+            <th>Aktivitas</th>
+            <th>Persentase (%)</th>
+            <th>Jumlah Pengguna</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in prediction_frequencies_dua %}
+            <tr>
+              <td class="text-center">{{ item.event }}</td>
+              <td class="text-center">{{ item.percentage|floatformat:2 }}%</td>
+              <td class="text-center">{{ item.count}} dari {{num_users}} Pengguna</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}

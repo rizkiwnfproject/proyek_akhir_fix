@@ -1,0 +1,33 @@
+.dashboard-card{
+    /* background-color: red; */
+    width: 80vw;
+    padding-top: 20px;
+}
+
+.chart-container {
+    flex: 1;
+    margin: 12px;
+}
+
+.card {
+    flex: 1;
+    margin: 12px;
+}
+/* 
+.card{
+    background-color: #0e22388e;
+} */
+.icon-card i{
+    font-size: 4rem;
+    color: #0e2238;
+}
+.card-title{
+    font-weight: 700;
+}
+.icon-card .card-field{
+    font-size: 1.5rem;
+    margin-top: 15px;
+}
+.icon-card .card-field p{
+    font-size: 1rem;
+}

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Journey</title>
+    <style>
+        .card {
+            margin: 12px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .card-body {
+            margin: 12px;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>User Journey</h1>
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">User Journey Sankey Diagram</h5>
+            <div id="sankey-chart">{{ sankey_plot|safe }}</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Frekuensi Pengguna Cluster</h5>
+            <div>
+                <div class="p-2">
+                    <canvas id="clusterFrequencyChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Prediksi Langkah Masa Depan Pengguna</h5>
+            <div>
+                <div class="p-2">
+                    <canvas id="predictionFrequencyChart" width="400" height="215"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Representasi Cluster</h5>
+            <div>
+                <ul id="cluster-representations">
+                    {% for cluster, representation in cluster_representations.items %}
+                        <li><strong>Cluster {{ cluster }}:</strong> {{ representation }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Cluster Frequency Data
+        var clusterFrequencyData = JSON.parse('{{ cluster_frequencies|escapejs }}');
+        var clusterLabels = clusterFrequencyData.map(function(d) { return d.cluster; });
+        var clusterValues = clusterFrequencyData.map(function(d) { return d.count; });
+
+        var ctxClusterFrequency = document.getElementById('clusterFrequencyChart').getContext('2d');
+        new Chart(ctxClusterFrequency, {
+            type: 'bar',
+            data: {
+                labels: clusterLabels,
+                datasets: [{
+                    label: 'User Count',
+                    data: clusterValues,
+                    backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Prediction Frequency Data
+        var predictionFrequencyData = JSON.parse('{{ prediction_frequencies|escapejs }}');
+        var predictionLabels = predictionFrequencyData.map(function(d) { return d.event; });
+        var predictionValues = predictionFrequencyData.map(function(d) { return d.count; });
+
+        var ctxPredictionFrequency = document.getElementById('predictionFrequencyChart').getContext('2d');
+        new Chart(ctxPredictionFrequency, {
+            type: 'line',
+            data: {
+                labels: predictionLabels,
+                datasets: [{
+                    label: 'Prediction Count',
+                    data: predictionValues,
+                    backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                    borderColor: 'rgba(255, 159, 64, 1)',
+                    borderWidth: 1,
+                    fill: true
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Representasi Cluster
+        var clusterRepresentations = JSON.parse('{{ cluster_representations|escapejs }}');
+        var representationList = document.getElementById('cluster-representations');
+        for (var cluster in clusterRepresentations) {
+            var listItem = document.createElement('li');
+            listItem.innerHTML = '<strong>Cluster ' + cluster + ':</strong> ' + clusterRepresentations[cluster];
+            representationList.appendChild(listItem);
+        }
+    </script>
+</body>
+</html>

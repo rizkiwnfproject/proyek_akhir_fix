@@ -1,0 +1,70 @@
+body {
+    overflow-x: hidden;
+    padding: 20px;
+}
+
+.prediksi-field {
+    /* width: 100vh; */
+    /* background-color: red; */
+}
+
+.main {
+    width: 100vw;
+    height: auto;
+    height: fit-content;
+    overflow: hidden;
+}
+
+.filter-tabel {
+    width: 79vw;
+    background-color: white;
+    border-radius: 25px;
+    box-shadow: -2px 2px 9px 1px rgba(0, 0, 0, 0.13);
+    -webkit-box-shadow: -2px 2px 9px 1px rgba(0, 0, 0, 0.13);
+    -moz-box-shadow: -2px 2px 9px 1px rgba(0, 0, 0, 0.13);
+    margin-bottom: 40px;
+    padding: 15px;
+}
+
+.search-bar{
+    margin: 10px;
+}
+.search-bar .search{
+    padding: 10px;
+}
+.search-bar input{
+    border: 1px solid #0e2238;
+}
+
+
+
+.search-bar button{
+    padding: 10px 20px;
+    background-color: #0e2238;
+    border: none;
+}
+
+.filter-bar {
+    padding-right: 25px;
+}
+
+.filter-bar .filter-tanggal {
+    border: 1px solid #0e2238;
+    border-radius: 25px;
+    padding: 10px 15px;
+    color: #0e2238;
+}
+
+
+/* Prediksi Tabel */
+
+.prediksi-tabel{
+    width: 79vw;
+    background-color: white;
+    border-radius: 25px;
+    box-shadow: -2px 2px 9px 1px rgba(0, 0, 0, 0.13);
+    -webkit-box-shadow: -2px 2px 9px 1px rgba(0, 0, 0, 0.13);
+    -moz-box-shadow: -2px 2px 9px 1px rgba(0, 0, 0, 0.13);
+    margin-bottom: 40px;
+    padding: 15px;
+}

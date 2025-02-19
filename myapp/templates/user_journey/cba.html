@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Journey</title>
+    <link rel="stylesheet" href="{% static 'myapp/css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'myapp/css/sidebar.css' %}" />
+    <link rel="stylesheet" href="{% static 'myapp/css/cjm/cjm.css' %}" />
+    <link rel="stylesheet" href="{% static 'myapp/css/bootstrap-datepicker.min.css' %}" />
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js"> -->
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/sidebars/" />
+    <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  </head>
+
+  <body>
+    <!-- dashboard.html -->
+
+    {% block content %}
+      <div class="cjm">
+        <div class="row">
+          <div class="col-2">
+            {% include 'user_journey/sidebar.html' %}
+          </div>
+          <div class="col-10 cjm-field">
+            <div class="main p-3">
+              <div id="content" class="">
+                <div class="card" style="width: 76rem">
+                  <div class="card-body">
+                    <h2 class="card-title text-center">Representasi Peta Perjalanan Pengguna</h2>
+                    <div>
+                      {% include 'user_journey/user_journey-grafik.html' %}
+                    </div>
+                  </div>
+                </div>
+                <div class="dashboard-card" style="width: 76rem">
+                  <div class="d-flex flex-column justify-content-between">
+                    {% for cluster, sankey_data in sankey_cluster_plots.items %}
+                    <div class="chart-container">
+                      <div class="card" style="width: 100%; margin: 20px 0px 0px 0px">
+                        <div class="card-body">
+                          <h4 class="card-title text-center">Sankey Diagram Cluster {{ cluster }}</h4>
+                          <div>
+                            {{ sankey_data.diagram|safe }}
+                          </div>
+                          <div class="activity-percentage">
+                            <h5>Prediksi Aktivitas Pengguna (%):</h5>
+                            <ul>
+                              {% for activity, percentage in sankey_data.percentage.items %}
+                              <li>{{ activity }}: {{ percentage|floatformat:2 }}%</li>
+                              {% endfor %}
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endblock %}
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{% static 'myapp/js/bootstrap.bundle.min.js' %}"></script>
+  </body>
+</html>

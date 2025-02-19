@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Successful</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Upload Successful</h1>
+    <p>Your dataset has been uploaded and processed.</p>
+
+    {% if recall %}
+        <h2>Recall: {{ recall }}</h2>
+    {% endif %}
+
+    <h2>Dataset Information</h2>
+    <p><strong>Number of Users:</strong> {{ num_users }}</p>
+    <p><strong>Number of Transactions:</strong> {{ transaction_count }}</p>
+    <p><strong>Revenue:</strong> {{ revenue }}</p>
+
+    {% if results %}
+        <h2>Predictions and Clusters</h2>
+        <table>
+            <thead>
+                <tr>
+                    {% for key in results.0.keys %}
+                        <th>{{ key }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in results %}
+                    <tr>
+                        {% for value in result.values %}
+                            <td>{{ value }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No results to display.</p>
+    {% endif %}
+
+    <div class="card" style="width: 37rem; height: 24rem; margin: 12px;">
+        <div class="card-body">
+            <h5 class="card-title">Grafik Jumlah Pengunjung</h5>
+            <div>
+                <div class="p-2">
+                    <canvas id="visitorChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card" style="width: 37rem; height: 24rem; margin: 12px;">
+        <div class="card-body">
+            <h5 class="card-title">Grafik Jumlah Aktivitas Pengguna</h5>
+            <div>
+                <div class="p-2">
+                    <canvas id="activityChart" width="400" height="215"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card" style="width: 50rem; height: 24rem; margin: 12px;">
+        <div class="card-body">
+            <h5 class="card-title">User Journey Sankey Diagram</h5>
+            <div id="sankey-chart">{{ sankey_plot|safe }}</div>
+        </div>
+    </div>
+
+    <script>
+        // Visitor Data
+        var visitorData = JSON.parse('{{ visitor_chart_data|escapejs }}');
+        var visitorLabels = visitorData.map(function(d) { return d.week_label; });
+        var visitorValues = visitorData.map(function(d) { return d.visitors; });
+
+        var ctxVisitor = document.getElementById('visitorChart').getContext('2d');
+        new Chart(ctxVisitor, {
+            type: 'bar',
+            data: {
+                labels: visitorLabels,
+                datasets: [{
+                    label: 'Jumlah Pengunjung',
+                    data: visitorValues,
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Activity Data
+        var activityData = JSON.parse('{{ activity_chart_data|escapejs }}');
+        var activityLabels = activityData.map(function(d) { return d.activity; });
+        var activityValues = activityData.map(function(d) { return d.count; });
+
+        var ctxActivity = document.getElementById('activityChart').getContext('2d');
+        new Chart(ctxActivity, {
+            type: 'line',
+            data: {
+                labels: activityLabels,
+                datasets: [{
+                    label: 'Jumlah Aktivitas Pengguna',
+                    data: activityValues,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1,
+                    fill: true
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

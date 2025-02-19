@@ -1,0 +1,10 @@
+{% extends 'dashboard/dashboard.html' %} {% block content %}
+<div class="dashboard-card">
+  <div class="card m-2">
+    <div class="card-body">
+      <div id="sankey-chart">{{ sankey_plot|safe }}</div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

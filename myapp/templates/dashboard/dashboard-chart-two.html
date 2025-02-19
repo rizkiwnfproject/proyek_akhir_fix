@@ -1,0 +1,34 @@
+{% extends 'dashboard/dashboard.html' %} {% block content %}
+{% load static custom_filters %}
+<div class="card" style="width: 35rem; height: 57rem; margin: 12px;">
+  <div class="card-body">
+    <h6 class="card-title">Grafik Jumlah Aktivitas Pengguna ({{ date_range }})</h6>
+    <p style="font-size:13px">menunjukkan aktivitas yang dilakukan oleh pengguna.</p>
+    <div>
+      <div class="p-2">
+        <canvas id="activityChart" width="400" height="215"></canvas>
+      </div>
+      <div>
+        <table class="table table-striped">
+          <thead>
+              <tr>
+                  <th>Aktivitas</th>
+                  <th>Jumlah</th>
+                  <th>Deskripsi</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for item in activity_chart_data_dua %}
+              <tr>
+                  <td>{{ item.activity|replace_underscore }}</td>
+                  <td>{{ item.count }} aktivitas </td>
+                  <td>{{ item.description }}</td>
+              </tr>
+              {% endfor %}
+          </tbody>
+      </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
